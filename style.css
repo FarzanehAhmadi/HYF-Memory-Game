@@ -63,3 +63,12 @@ img {
   cursor: pointer;
 }
 
+.card-inner:hover .card-front img {
+  width: 310px;
+  height: 310px;
+}
+
+.card-inner:hover .card-back img {
+  width: 310px;
+  height: 310px;
+}
