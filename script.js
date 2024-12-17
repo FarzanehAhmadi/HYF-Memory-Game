@@ -13,16 +13,8 @@ cardElement.classList.add('card');
 containerElement.appendChild(cardElement);
 
 
-cardElement.innerHTML = `
-  <div class="card-inner">
-    <div class="card-back">
-      <img src="assets/card-backside.jpg" alt="Back of the card">
-    </div>
-    <div class="card-front">
-      <img src="assets/card-picture.jpg" alt="Front of the card">
-    </div>
-  </div>
-`;
+
+
 
 cardElement.addEventListener('click', flipCard);
 
