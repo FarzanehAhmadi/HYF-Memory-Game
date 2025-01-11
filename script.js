@@ -97,17 +97,27 @@ picList.forEach((pic) => {
 let gameStarted = false; //week3
 
 function flipCard() {
+
   if (!gameStarted) {
     startTimer();
     gameStarted = true;
   }
 
   const cardInner = this;
-  if (cardInner.classList.contains('flipped')) {
-    cardInner.classList.remove('flipped');
-  } else {
-    cardInner.classList.add('flipped');
-    countPlayerMoves();
+
+  if (flippedCards.length >= 2 || cardInner.classList.contains('flipped')) {
+    return;
+  } 
+  cardInner.classList.add('flipped');
+  flippedCards.push(cardInner)
+
+  countPlayerMoves();
+
+  if (flippedCards.length === 2) {
+    setTimeout(() => {
+      flippedCards.forEach((card) => card.classList.remove('flipped'));
+      flippedCards = []; // Reset for the next pair
+    }, flipDelay);
   }
 }
 
@@ -152,3 +162,7 @@ function formatTime(totalSeconds){
   const secs = (totalSeconds %60).toString().padStart(2,'0');
   return `Time: ${hours}.${minutes}.${secs}`
 }
+
+//Track Flipped Cards
+let flippedCards = [];
+const flipDelay = 2000;
