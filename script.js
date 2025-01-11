@@ -101,5 +101,24 @@ function flipCard() {
     cardInner.classList.remove('flipped');
   } else {
     cardInner.classList.add('flipped');
+    countPlayerMoves();
   }
 }
+
+//Week3
+
+//Part 1: Player moves
+let moveCounter = 0;
+
+  function countPlayerMoves(){
+    moveCounter ++;
+    moveCounterElement.innerText = `Moves: ${moveCounter}`
+  }
+
+const statsElement = document.createElement('div');
+statsElement.classList.add('stats');
+containerElement.appendChild(statsElement);
+
+const moveCounterElement = document.createElement('p');
+statsElement.appendChild(moveCounterElement);
+moveCounterElement.innerText = `Moves: 0`
