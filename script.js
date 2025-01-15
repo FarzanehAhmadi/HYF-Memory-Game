@@ -54,8 +54,8 @@ pictures.forEach( (pic) => {
 
 //Shuffle
 for(let i = 0; i < 1000 ; i++){
-  const randomIndex1 = Math.floor(Math.random()* 12)
-  const randomIndex2 = Math.floor(Math.random()* 12)
+  const randomIndex1 = Math.floor(Math.random()* picList.length)
+  const randomIndex2 = Math.floor(Math.random()* picList.length)
   const temp = picList[randomIndex1];
   picList[randomIndex1] = picList[randomIndex2]
   picList[randomIndex2] = temp;
