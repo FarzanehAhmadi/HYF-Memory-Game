@@ -18,30 +18,30 @@ const pictures = [
   {
    id :'pic1',
    name : 'cat',
-   url :'https://github.com/FarzanehAhmadi/HYF-assignments/blob/main/memory-app/assets/cat.jpg?raw=true',
+   url :'/assets/cat.jpg'
   },
   {
    id :'pic2',
    name : 'chicken',
-   url :'https://github.com/FarzanehAhmadi/HYF-assignments/blob/main/memory-app/assets/chicken.jpg?raw=true',
+   url :'/assets/chicken.jpg',
   },
   {
    id :'pic3',
    name : 'dog',
-   url :'https://github.com/FarzanehAhmadi/HYF-assignments/blob/main/memory-app/assets/dog.jpg?raw=true',
+   url :'/assets/dog.jpg',
   },
   {
    id :'pic4',
    name : 'elephant',
-   url :'https://github.com/FarzanehAhmadi/HYF-assignments/blob/main/memory-app/assets/elephant.jpg?raw=true',
+   url :'/assets/elephant.jpg',
   },{
    id :'pic5',
    name : 'frog',
-   url :'https://github.com/FarzanehAhmadi/HYF-assignments/blob/main/memory-app/assets/frog.jpg?raw=true',
+   url :'/assets/frog.jpg',
   },{
    id :'pic6',
    name : 'lion',
-   url :'https://github.com/FarzanehAhmadi/HYF-assignments/blob/main/memory-app/assets/lion.jpg?raw=true',
+   url :'/assets/lion.jpg',
   },
  ]
 
@@ -54,8 +54,8 @@ pictures.forEach( (pic) => {
 
 //Shuffle
 for(let i = 0; i < 1000 ; i++){
-  const randomIndex1 = Math.floor(Math.random()* 12)
-  const randomIndex2 = Math.floor(Math.random()* 12)
+  const randomIndex1 = Math.floor(Math.random()* picList.length)
+  const randomIndex2 = Math.floor(Math.random()* picList.length)
   const temp = picList[randomIndex1];
   picList[randomIndex1] = picList[randomIndex2]
   picList[randomIndex2] = temp;
