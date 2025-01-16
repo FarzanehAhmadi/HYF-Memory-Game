@@ -12,11 +12,49 @@ const cardElement = document.createElement('div');
 cardElement.classList.add('card-grid');
 containerElement.appendChild(cardElement);
 
+// Level buttons
+const levelContainer = document.createElement('div');
+containerElement.appendChild(levelContainer);
+levelContainer.classList.add('level-container');
+
+const easyButtElement = document.createElement('button');
+easyButtElement.classList.add('easy-button');
+easyButtElement.innerText ='Easy';
+levelContainer.appendChild(easyButtElement)
+
+const mediumButtElement = document.createElement('button');
+mediumButtElement.classList.add('medium-button');
+mediumButtElement.innerText ='Medium';
+levelContainer.appendChild(mediumButtElement)
+
+const hardButtElement = document.createElement('button');
+hardButtElement.classList.add('hard-button');
+hardButtElement.innerText ='Hard';
+levelContainer.appendChild(hardButtElement);
+
+easyButtElement.addEventListener('click', () => getImagesForGame('easy'));
+mediumButtElement.addEventListener('click', () => getImagesForGame('medium'));
+hardButtElement.addEventListener('click', () => getImagesForGame('hard'));
+
+
 let gameStarted = false;
 let flippedCards = [];
 
-// Fetch pictures from API
-fetch(`https://farzanehahmadi.github.io/easy.json`)
+// Fetch function for each level
+const getImagesForGame = (level) => {
+  // Reset game state
+  flippedCards = [];
+  moveCounter = 0;
+  moveCounterElement.innerText = `Moves: ${moveCounter}`;
+  clearInterval(timer);
+  timer = null;
+  seconds = 0;
+  timerElement.innerText = `Time: 00.00.00`;
+  cardElement.innerHTML = '';
+  levelContainer.innerHTML = '';
+
+  // Fetch pictures from API
+  fetch(`https://raw.githubusercontent.com/FarzanehAhmadi/FarzanehAhmadi.github.io/refs/heads/main/${level}.json`)
   .then((res) => res.json())
   .then((data) => {
     const pictures = data;
@@ -39,6 +77,9 @@ fetch(`https://farzanehahmadi.github.io/easy.json`)
       cardElement.appendChild(card);
     });
   })
+}
+
+
 
 
 function createCard (pic){
