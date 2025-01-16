@@ -12,54 +12,31 @@ const cardElement = document.createElement('div');
 cardElement.classList.add('card-grid');
 containerElement.appendChild(cardElement);
 
-//Week2
+// Fetch pictures from API
+fetch(`https://farzanehahmadi.github.io/easy.json`)
+  .then((res) => res.json())
+  .then((data) => {
+    const pictures = data;
+    const picList = [];
+    pictures.forEach( (pic) => {
+      picList.push(pic);
+      picList.push(pic);
+    })
+    //Shuffle
+    for(let i = 0; i < 1000 ; i++){
+      const randomIndex1 = Math.floor(Math.random()* picList.length)
+      const randomIndex2 = Math.floor(Math.random()* picList.length)
+      const temp = picList[randomIndex1];
+      picList[randomIndex1] = picList[randomIndex2]
+      picList[randomIndex2] = temp;
+    };
+    //Display cards
+    picList.forEach((pic) => {
+      const card = createCard(pic);
+      cardElement.appendChild(card);
+    });
+  })
 
-const pictures = [
-  {
-   id :'pic1',
-   name : 'cat',
-   url :'/assets/cat.jpg'
-  },
-  {
-   id :'pic2',
-   name : 'chicken',
-   url :'/assets/chicken.jpg',
-  },
-  {
-   id :'pic3',
-   name : 'dog',
-   url :'/assets/dog.jpg',
-  },
-  {
-   id :'pic4',
-   name : 'elephant',
-   url :'/assets/elephant.jpg',
-  },{
-   id :'pic5',
-   name : 'frog',
-   url :'/assets/frog.jpg',
-  },{
-   id :'pic6',
-   name : 'lion',
-   url :'/assets/lion.jpg',
-  },
- ]
-
- const picList = [];
-
-pictures.forEach( (pic) => {
-  picList.push(pic);
-  picList.push(pic);
-})
-
-//Shuffle
-for(let i = 0; i < 1000 ; i++){
-  const randomIndex1 = Math.floor(Math.random()* picList.length)
-  const randomIndex2 = Math.floor(Math.random()* picList.length)
-  const temp = picList[randomIndex1];
-  picList[randomIndex1] = picList[randomIndex2]
-  picList[randomIndex2] = temp;
-}
 
 function createCard (pic){
  
@@ -87,11 +64,6 @@ function createCard (pic){
 
   return cardInner;
 }
-
-picList.forEach((pic) => {
-  const card = createCard(pic);
-  cardElement.appendChild(card);
-})
 
 
 let gameStarted = false; //week3
