@@ -12,6 +12,9 @@ const cardElement = document.createElement('div');
 cardElement.classList.add('card-grid');
 containerElement.appendChild(cardElement);
 
+let gameStarted = false;
+let flippedCards = [];
+
 // Fetch pictures from API
 fetch(`https://farzanehahmadi.github.io/easy.json`)
   .then((res) => res.json())
@@ -39,7 +42,6 @@ fetch(`https://farzanehahmadi.github.io/easy.json`)
 
 
 function createCard (pic){
- 
   const cardInner = document.createElement('div');
   cardInner.className = 'card-inner'
   cardInner.id = `card-${pic.id}`;
@@ -65,9 +67,6 @@ function createCard (pic){
   return cardInner;
 }
 
-
-let gameStarted = false; //week3
-
 function flipCard() {
 
   if (!gameStarted) {
@@ -89,13 +88,11 @@ function flipCard() {
     setTimeout(() => {
       flippedCards.forEach((card) => card.classList.remove('flipped'));
       flippedCards = []; // Reset for the next pair
-    }, flipDelay);
+    }, 2000);
   }
 }
 
-//Week3
-
-//Player moves
+//Timer and stats 
 let moveCounter = 0;
 
   function countPlayerMoves(){
@@ -106,18 +103,16 @@ let moveCounter = 0;
 const statsElement = document.createElement('div');
 statsElement.classList.add('stats');
 containerElement.appendChild(statsElement);
-
+//Player moves
 const moveCounterElement = document.createElement('p');
 statsElement.appendChild(moveCounterElement);
 moveCounterElement.innerText = `Moves: 0`
 
 // Timer
-
 const timerElement = document.createElement('p');
 statsElement.appendChild(timerElement);
 timerElement.classList.add('timer');
 timerElement.innerText = `Time: 00.00.00`;
-
 let timer;
 let seconds = 0;
 function startTimer(){
@@ -134,7 +129,3 @@ function formatTime(totalSeconds){
   const secs = (totalSeconds %60).toString().padStart(2,'0');
   return `Time: ${hours}.${minutes}.${secs}`
 }
-
-//Track Flipped Cards
-let flippedCards = [];
-const flipDelay = 2000;
