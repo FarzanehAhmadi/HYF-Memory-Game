@@ -105,7 +105,7 @@ function flipCard() {
 
   const cardInner = this;
 
-  if (flippedCards.length >= 2 || cardInner.classList.contains('flipped')) {
+  if (flippedCards.length === 2 || cardInner.classList.contains('flipped')) {
     return;
   } 
   cardInner.classList.add('flipped');
