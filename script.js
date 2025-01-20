@@ -126,10 +126,10 @@ function flipCard() {
 //Player moves
 let moveCounter = 0;
 
-  function countPlayerMoves(){
-    moveCounter ++;
-    moveCounterElement.innerText = `Moves: ${moveCounter}`
-  }
+function countPlayerMoves(){
+  moveCounter ++;
+  moveCounterElement.innerText = `Moves: ${moveCounter}`
+}
 
 const statsElement = document.createElement('div');
 statsElement.classList.add('stats');
