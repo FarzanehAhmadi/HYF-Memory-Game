@@ -76,3 +76,12 @@ img {
   transform: scale(1.05); /* Smooth zoom effect */
   transition: transform 0.3s ease-in-out;
 }
+
+.stats {
+  display: flex;
+  gap: 30px;
+  margin-top: 30px;
+  font-family: 'Lucida Sans';
+  color: rgb(41, 16, 63);
+  font-weight: 500;
+}

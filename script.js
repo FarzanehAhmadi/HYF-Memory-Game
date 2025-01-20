@@ -94,12 +94,75 @@ picList.forEach((pic) => {
 })
 
 
+let gameStarted = false; //week3
 
 function flipCard() {
+
+  if (!gameStarted) {
+    startTimer();
+    gameStarted = true;
+  }
+
   const cardInner = this;
-  if (cardInner.classList.contains('flipped')) {
-    cardInner.classList.remove('flipped');
-  } else {
-    cardInner.classList.add('flipped');
+
+  if (flippedCards.length === 2 || cardInner.classList.contains('flipped')) {
+    return;
+  } 
+  cardInner.classList.add('flipped');
+  flippedCards.push(cardInner)
+
+  countPlayerMoves();
+
+  if (flippedCards.length === 2) {
+    setTimeout(() => {
+      flippedCards.forEach((card) => card.classList.remove('flipped'));
+      flippedCards = []; // Reset for the next pair
+    }, flipDelay);
   }
 }
+
+//Week3
+
+//Player moves
+let moveCounter = 0;
+
+function countPlayerMoves(){
+  moveCounter ++;
+  moveCounterElement.innerText = `Moves: ${moveCounter}`
+}
+
+const statsElement = document.createElement('div');
+statsElement.classList.add('stats');
+containerElement.appendChild(statsElement);
+
+const moveCounterElement = document.createElement('p');
+statsElement.appendChild(moveCounterElement);
+moveCounterElement.innerText = `Moves: 0`
+
+// Timer
+
+const timerElement = document.createElement('p');
+statsElement.appendChild(timerElement);
+timerElement.classList.add('timer');
+timerElement.innerText = `Time: 00.00.00`;
+
+let timer;
+let seconds = 0;
+function startTimer(){
+  if(!timer){
+    timer = setInterval(() => {
+      seconds++;
+      timerElement.innerText = formatTime(seconds);
+    }, 1000);
+  }
+}
+function formatTime(totalSeconds){
+  const hours = Math.floor(totalSeconds/3600).toString().padStart(2,'0');
+  const minutes = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2,'0');
+  const secs = (totalSeconds %60).toString().padStart(2,'0');
+  return `Time: ${hours}.${minutes}.${secs}`
+}
+
+//Track Flipped Cards
+let flippedCards = [];
+const flipDelay = 2000;
