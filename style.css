@@ -85,3 +85,23 @@ img {
   color: rgb(41, 16, 63);
   font-weight: 500;
 }
+
+.level-container{
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.easy-button,.medium-button,.hard-button{
+  color: rgb(87, 46, 46);
+  background-color: rgb(245, 211, 207);
+  width: 200px;
+  box-sizing: border-box;
+  padding: 20px 10px;
+  font-size: 20px;
+  font-weight: 600;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2); 
+  transition: box-shadow 0.3s ease; 
+  cursor: pointer;
+}

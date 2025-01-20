@@ -12,57 +12,78 @@ const cardElement = document.createElement('div');
 cardElement.classList.add('card-grid');
 containerElement.appendChild(cardElement);
 
-//Week2
+// Level buttons
+const levelContainer = document.createElement('div');
+containerElement.appendChild(levelContainer);
+levelContainer.classList.add('level-container');
 
-const pictures = [
-  {
-   id :'pic1',
-   name : 'cat',
-   url :'/assets/cat.jpg'
-  },
-  {
-   id :'pic2',
-   name : 'chicken',
-   url :'/assets/chicken.jpg',
-  },
-  {
-   id :'pic3',
-   name : 'dog',
-   url :'/assets/dog.jpg',
-  },
-  {
-   id :'pic4',
-   name : 'elephant',
-   url :'/assets/elephant.jpg',
-  },{
-   id :'pic5',
-   name : 'frog',
-   url :'/assets/frog.jpg',
-  },{
-   id :'pic6',
-   name : 'lion',
-   url :'/assets/lion.jpg',
-  },
- ]
+const easyButtElement = document.createElement('button');
+easyButtElement.classList.add('easy-button');
+easyButtElement.innerText ='Easy';
+levelContainer.appendChild(easyButtElement)
 
- const picList = [];
+const mediumButtElement = document.createElement('button');
+mediumButtElement.classList.add('medium-button');
+mediumButtElement.innerText ='Medium';
+levelContainer.appendChild(mediumButtElement)
 
-pictures.forEach( (pic) => {
-  picList.push(pic);
-  picList.push(pic);
-})
+const hardButtElement = document.createElement('button');
+hardButtElement.classList.add('hard-button');
+hardButtElement.innerText ='Hard';
+levelContainer.appendChild(hardButtElement);
 
-//Shuffle
-for(let i = 0; i < 1000 ; i++){
-  const randomIndex1 = Math.floor(Math.random()* picList.length)
-  const randomIndex2 = Math.floor(Math.random()* picList.length)
-  const temp = picList[randomIndex1];
-  picList[randomIndex1] = picList[randomIndex2]
-  picList[randomIndex2] = temp;
+easyButtElement.addEventListener('click', () => getImagesForGame('easy'));
+mediumButtElement.addEventListener('click', () => getImagesForGame('medium'));
+hardButtElement.addEventListener('click', () => getImagesForGame('hard'));
+
+
+let gameStarted = false;
+let flippedCards = []; 
+
+// Fetch function for each level
+const getImagesForGame = (level) => {
+  resetGameState();
+  // Fetch pictures from API
+  fetch(`https://raw.githubusercontent.com/FarzanehAhmadi/FarzanehAhmadi.github.io/refs/heads/main/${level}.json`)
+  .then((res) => res.json())
+  .then((data) => {
+    const pictures = data;
+    const picList = [];
+    pictures.forEach( (pic) => {
+      picList.push(pic);
+      picList.push(pic);
+    })
+    //Shuffle
+    for(let i = 0; i < 1000 ; i++){
+      const randomIndex1 = Math.floor(Math.random()* picList.length)
+      const randomIndex2 = Math.floor(Math.random()* picList.length)
+      const temp = picList[randomIndex1];
+      picList[randomIndex1] = picList[randomIndex2]
+      picList[randomIndex2] = temp;
+    };
+    //Display cards
+    picList.forEach((pic) => {
+      const card = createCard(pic);
+      cardElement.appendChild(card);
+    });
+  })
 }
 
+// Reset game state
+function resetGameState (){
+  flippedCards = [];
+  moveCounter = 0;
+  moveCounterElement.innerText = `Moves: ${moveCounter}`;
+  clearInterval(timer);
+  timer = null;
+  seconds = 0;
+  timerElement.innerText = `Time: 00.00.00`;
+  cardElement.innerHTML = '';
+  levelContainer.innerHTML = '';
+}
+
+
 function createCard (pic){
- 
   const cardInner = document.createElement('div');
   cardInner.className = 'card-inner'
   cardInner.id = `card-${pic.id}`;
@@ -88,14 +109,6 @@ function createCard (pic){
   return cardInner;
 }
 
-picList.forEach((pic) => {
-  const card = createCard(pic);
-  cardElement.appendChild(card);
-})
-
-
-let gameStarted = false; //week3
-
 function flipCard() {
 
   if (!gameStarted) {
@@ -117,13 +130,11 @@ function flipCard() {
     setTimeout(() => {
       flippedCards.forEach((card) => card.classList.remove('flipped'));
       flippedCards = []; // Reset for the next pair
-    }, flipDelay);
+    }, 2000);
   }
 }
 
-//Week3
-
-//Player moves
+//Timer and stats 
 let moveCounter = 0;
 
 function countPlayerMoves(){
@@ -134,18 +145,16 @@ function countPlayerMoves(){
 const statsElement = document.createElement('div');
 statsElement.classList.add('stats');
 containerElement.appendChild(statsElement);
-
+//Player moves
 const moveCounterElement = document.createElement('p');
 statsElement.appendChild(moveCounterElement);
 moveCounterElement.innerText = `Moves: 0`
 
 // Timer
-
 const timerElement = document.createElement('p');
 statsElement.appendChild(timerElement);
 timerElement.classList.add('timer');
 timerElement.innerText = `Time: 00.00.00`;
-
 let timer;
 let seconds = 0;
 function startTimer(){
@@ -162,7 +171,3 @@ function formatTime(totalSeconds){
   const secs = (totalSeconds %60).toString().padStart(2,'0');
   return `Time: ${hours}.${minutes}.${secs}`
 }
-
-//Track Flipped Cards
-let flippedCards = [];
-const flipDelay = 2000;
