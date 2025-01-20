@@ -117,7 +117,7 @@ function flipCard() {
 
   const cardInner = this;
 
-  if (flippedCards.length >= 2 || cardInner.classList.contains('flipped')) {
+  if (flippedCards.length === 2 || cardInner.classList.contains('flipped')) {
     return;
   } 
   cardInner.classList.add('flipped');
@@ -136,10 +136,10 @@ function flipCard() {
 //Timer and stats 
 let moveCounter = 0;
 
-  function countPlayerMoves(){
-    moveCounter ++;
-    moveCounterElement.innerText = `Moves: ${moveCounter}`
-  }
+function countPlayerMoves(){
+  moveCounter ++;
+  moveCounterElement.innerText = `Moves: ${moveCounter}`
+}
 
 const statsElement = document.createElement('div');
 statsElement.classList.add('stats');
