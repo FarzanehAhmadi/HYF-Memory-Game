@@ -38,21 +38,11 @@ hardButtElement.addEventListener('click', () => getImagesForGame('hard'));
 
 
 let gameStarted = false;
-let flippedCards = [];
+let flippedCards = []; 
 
 // Fetch function for each level
 const getImagesForGame = (level) => {
-  // Reset game state
-  flippedCards = [];
-  moveCounter = 0;
-  moveCounterElement.innerText = `Moves: ${moveCounter}`;
-  clearInterval(timer);
-  timer = null;
-  seconds = 0;
-  timerElement.innerText = `Time: 00.00.00`;
-  cardElement.innerHTML = '';
-  levelContainer.innerHTML = '';
-
+  resetGameState();
   // Fetch pictures from API
   fetch(`https://raw.githubusercontent.com/FarzanehAhmadi/FarzanehAhmadi.github.io/refs/heads/main/${level}.json`)
   .then((res) => res.json())
@@ -79,7 +69,18 @@ const getImagesForGame = (level) => {
   })
 }
 
-
+// Reset game state
+function resetGameState (){
+  flippedCards = [];
+  moveCounter = 0;
+  moveCounterElement.innerText = `Moves: ${moveCounter}`;
+  clearInterval(timer);
+  timer = null;
+  seconds = 0;
+  timerElement.innerText = `Time: 00.00.00`;
+  cardElement.innerHTML = '';
+  levelContainer.innerHTML = '';
+}
 
 
 function createCard (pic){
