@@ -7,6 +7,19 @@ titleElement.innerHTML = 'Memory Game';
 
 containerElement.appendChild(titleElement);
 
+//Best score
+let bestScore = {
+  moves : 0,
+  time : 0,
+ }
+const bestScoreElement = document.createElement('div');
+containerElement.appendChild(bestScoreElement);
+bestScoreElement.classList.add('best-score');
+const bestMoves = document.createElement('p');
+bestScoreElement.appendChild(bestMoves);
+const bestTime = document.createElement('p');
+bestScoreElement.appendChild(bestTime);
+
 // Card Elements
 const cardElement = document.createElement('div');
 cardElement.classList.add('card-grid');
@@ -96,6 +109,7 @@ async function getImagesForGame (level) {
   } catch (error) {
     console.error("Error loading game images:", error)
   }
+  bestScoreElement.style.width ='500px'; //Adjust the width of the best score element to match the card grid size.
 }
 
 // Reset game stats
@@ -211,6 +225,7 @@ function stopTimer() {
 function resetGame (){
   flippedCards = [];
   moveCounter = 0;
+  bestScoreElement.style.width ='600px'; //Adjust the width of the best score element to match the card grid size.
   statsElement.style.display='none';
   moveCounterElement.innerText = `Moves: ${moveCounter}`;
   clearInterval(timer);
@@ -225,10 +240,24 @@ function resetGame (){
   levelContainer.appendChild(mediumButtElement);
   levelContainer.appendChild(hardButtElement);
 }
+//Update best score
+function updateBestScore(){
+  if(bestScore.moves === 0 || moveCounter < bestScore.moves){
+    bestScore.moves = moveCounter;
+  }
+  if(bestScore.time === 0 || seconds < bestScore.time){
+    bestScore.time = seconds;
+  }
+  bestMoves.innerText = `Top Record: ${bestScore.moves} moves`;
+  bestTime.innerText = `Best ${formatTime(bestScore.time)}`;
+  bestScoreElement.style.display = 'flex';
+}
+
 //check if game completed
 function checkIFGameComplited(matches){
   if(matches.length === picturesLenght){
     stopTimer();
+    updateBestScore();
     alert(`Congratulations!
 You could finish the game with ${moveCounter} moves and in ${timerElement.innerText.split(' ')[1]}.`)
   }

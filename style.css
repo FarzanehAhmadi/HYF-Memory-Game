@@ -122,6 +122,22 @@ img {
   transform: scale(1.05); /* Smooth zoom effect */
   transition: transform 0.3s ease-in-out;
 }
+
+.best-score{
+  display: none;
+  justify-content: center;
+  width: 600px;
+  gap : 100px;
+  background-color: beige;
+  font-weight: bold;
+  font-size: large;
+  padding: 10px;
+  color: rgb(71, 33, 4);
+  border-radius: 15px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 .other-game-section {
   text-align: center;
   padding: 10px;
