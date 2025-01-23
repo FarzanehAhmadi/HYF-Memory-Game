@@ -105,7 +105,23 @@ img {
   transition: box-shadow 0.3s ease; 
   cursor: pointer;
 }
-
+.reset-button{
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  color: rgb(112, 133, 243);
+  background-color: azure;
+  width: 100px;
+  height: auto;
+  font-size: 20px;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2); 
+  transition: box-shadow 0.3s ease; 
+  cursor: pointer;
+}
+.reset-button:hover{
+  transform: scale(1.05); /* Smooth zoom effect */
+  transition: transform 0.3s ease-in-out;
+}
 .other-game-section {
   text-align: center;
   padding: 10px;

@@ -44,6 +44,7 @@ containerElement.appendChild(statsElement);
 const resetButtonEL = document.createElement('button');
 resetButtonEL.innerText = 'Reset';
 resetButtonEL.addEventListener('click', resetGame);
+resetButtonEL.classList.add('reset-button');
   //Player moves
 const moveCounterElement = document.createElement('p');
 statsElement.appendChild(moveCounterElement);
