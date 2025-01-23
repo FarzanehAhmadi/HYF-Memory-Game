@@ -190,3 +190,8 @@ function formatTime(totalSeconds){
   const secs = (totalSeconds %60).toString().padStart(2,'0');
   return `Time: ${hours}.${minutes}.${secs}`
 }
+//Extra: link to another game I developed:)
+const otherGames = document.createElement('div')
+otherGames.classList.add('other-game-section');
+containerElement.appendChild(otherGames);
+otherGames.innerHTML = 'Check Out My Other Games: <a href="https://game-rps-javascript.netlify.app/" target="_blank">Rock Paper Scissors</a>';
