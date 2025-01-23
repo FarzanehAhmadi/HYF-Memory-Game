@@ -56,19 +56,23 @@ let seconds = 0;
 let gameStarted = false;
 let flippedCards = []; 
 
-// Fetch function for each level
-const getImagesForGame = (level) => {
+
+async function getImagesForGame (level) {
   resetGameState();
-  // Fetch pictures from API
-  fetch(`https://raw.githubusercontent.com/FarzanehAhmadi/FarzanehAhmadi.github.io/refs/heads/main/${level}.json`)
-  .then((res) => res.json())
-  .then((data) => {
-    const pictures = data;
+  try {
+    const picturesResponse = await fetch (`https://raw.githubusercontent.com/FarzanehAhmadi/FarzanehAhmadi.github.io/refs/heads/main/${level}.json`);
+
+    if (!picturesResponse.ok) {
+      throw new Error(`Failed to fetch images: ${picturesResponse.status}`);
+    }
+
+    const pictures = await picturesResponse.json();
     const picList = [];
+    //Duplicate
     pictures.forEach( (pic) => {
       picList.push(pic);
       picList.push(pic);
-    })
+    });
     //Shuffle
     for(let i = 0; i < 1000 ; i++){
       const randomIndex1 = Math.floor(Math.random()* picList.length)
@@ -82,7 +86,9 @@ const getImagesForGame = (level) => {
       const card = createCard(pic);
       cardElement.appendChild(card);
     });
-  })
+  } catch (error) {
+    console.error("Error loading game images:", error)
+  }
 }
 
 // Reset game state
