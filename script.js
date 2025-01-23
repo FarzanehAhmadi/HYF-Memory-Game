@@ -201,7 +201,12 @@ function formatTime(totalSeconds){
   const secs = (totalSeconds %60).toString().padStart(2,'0');
   return `Time: ${hours}.${minutes}.${secs}`
 }
-
+function stopTimer() {
+  if (timer) {
+    clearInterval(timer);
+    timer = null; 
+  }
+}
 //Reset game button
 function resetGame (){
   flippedCards = [];
@@ -223,6 +228,7 @@ function resetGame (){
 //check if game completed
 function checkIFGameComplited(matches){
   if(matches.length === picturesLenght){
+    stopTimer();
     alert(`Congratulations!
 You could finish the game with ${moveCounter} moves and in ${timerElement.innerText.split(' ')[1]}.`)
   }
