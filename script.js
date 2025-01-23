@@ -40,6 +40,10 @@ hardButtElement.addEventListener('click', () => getImagesForGame('hard'));
 const statsElement = document.createElement('div');
 statsElement.classList.add('stats');
 containerElement.appendChild(statsElement);
+  //Reset Button
+const resetButtonEL = document.createElement('button');
+resetButtonEL.innerText = 'Reset';
+resetButtonEL.addEventListener('click', resetGame);
   //Player moves
 const moveCounterElement = document.createElement('p');
 statsElement.appendChild(moveCounterElement);
@@ -91,7 +95,7 @@ async function getImagesForGame (level) {
   }
 }
 
-// Reset game state
+// Reset game stats
 function resetGameState (){
   flippedCards = [];
   moveCounter = 0;
@@ -123,7 +127,7 @@ function createCard (pic){
   frontImg.src = pic.url;
   frontImg.alt = "Front of the card";
   cardFront.appendChild(frontImg);
-
+  statsElement.appendChild(resetButtonEL);
   cardInner.appendChild(cardBack);
   cardInner.appendChild(cardFront);
   cardInner.addEventListener('click', flipCard);
@@ -190,6 +194,25 @@ function formatTime(totalSeconds){
   const secs = (totalSeconds %60).toString().padStart(2,'0');
   return `Time: ${hours}.${minutes}.${secs}`
 }
+
+//Reset game button
+function resetGame (){
+  flippedCards = [];
+  moveCounter = 0;
+  moveCounterElement.innerText = `Moves: ${moveCounter}`;
+  clearInterval(timer);
+  timer = null;
+  seconds = 0;
+  timerElement.innerText = `Time: 00.00.00`;
+  
+  gameStarted = false;
+
+  cardElement.innerHTML = '';
+  levelContainer.appendChild(easyButtElement);
+  levelContainer.appendChild(mediumButtElement);
+  levelContainer.appendChild(hardButtElement);
+}
+
 //Extra: link to another game I developed:)
 const otherGames = document.createElement('div')
 otherGames.classList.add('other-game-section');
