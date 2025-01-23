@@ -37,6 +37,8 @@ mediumButtElement.addEventListener('click', () => getImagesForGame('medium'));
 hardButtElement.addEventListener('click', () => getImagesForGame('hard'));
 
 
+
+
 let gameStarted = false;
 let flippedCards = []; 
 
@@ -127,13 +129,25 @@ function flipCard() {
   countPlayerMoves();
 
   if (flippedCards.length === 2) {
-    setTimeout(() => {
-      flippedCards.forEach((card) => card.classList.remove('flipped'));
-      flippedCards = []; // Reset for the next pair
-    }, 2000);
+    const [firstCard, secondCard] = flippedCards;
+
+    const firstCardImgSrc = firstCard.querySelector('.card-front img').src;
+    const secondCardImgSrc = secondCard.querySelector('.card-front img').src;
+    //Match card check
+    if(firstCardImgSrc === secondCardImgSrc){
+      setTimeout(() => {
+        flippedCards = [];
+        firstCard.classList.add('matched')     
+        secondCard.classList.add('matched') 
+      }, 500);
+    } else{
+        setTimeout(() => {
+          flippedCards.forEach((card) => card.classList.remove('flipped'));
+          flippedCards = []; 
+        }, 1000);
+      }
   }
 }
-
 //Timer and stats 
 let moveCounter = 0;
 
