@@ -60,7 +60,7 @@ let seconds = 0;
 
 let gameStarted = false;
 let flippedCards = []; 
-
+let picturesLenght = 0; // For checking completion
 
 async function getImagesForGame (level) {
   resetGameState();
@@ -91,6 +91,8 @@ async function getImagesForGame (level) {
       const card = createCard(pic);
       cardElement.appendChild(card);
     });
+    picturesLenght = 0;
+    picturesLenght = picList.length;
   } catch (error) {
     console.error("Error loading game images:", error)
   }
@@ -137,7 +139,6 @@ function createCard (pic){
 }
 
 function flipCard() {
-
   if (!gameStarted) {
     startTimer();
     gameStarted = true;
@@ -164,6 +165,10 @@ function flipCard() {
         flippedCards = [];
         firstCard.classList.add('matched')     
         secondCard.classList.add('matched') 
+        const matchedCards = document.querySelectorAll('.matched');
+        //check if game completed
+        checkIFGameComplited(matchedCards)
+
       }, 500);
     } else{
         setTimeout(() => {
@@ -179,6 +184,7 @@ let moveCounter = 0;
 function countPlayerMoves(){
   moveCounter ++;
   moveCounterElement.innerText = `Moves: ${moveCounter}`
+  statsElement.style.display = 'flex';
 }
 
 function startTimer(){
@@ -200,6 +206,7 @@ function formatTime(totalSeconds){
 function resetGame (){
   flippedCards = [];
   moveCounter = 0;
+  statsElement.style.display='none';
   moveCounterElement.innerText = `Moves: ${moveCounter}`;
   clearInterval(timer);
   timer = null;
@@ -207,12 +214,20 @@ function resetGame (){
   timerElement.innerText = `Time: 00.00.00`;
   
   gameStarted = false;
-
+  statsElement.removeChild(resetButtonEL)
   cardElement.innerHTML = '';
   levelContainer.appendChild(easyButtElement);
   levelContainer.appendChild(mediumButtElement);
   levelContainer.appendChild(hardButtElement);
 }
+//check if game completed
+function checkIFGameComplited(matches){
+  if(matches.length === picturesLenght){
+    alert(`Congratulations!
+You could finish the game with ${moveCounter} moves and in ${timerElement.innerText.split(' ')[1]}.`)
+  }
+}
+
 
 //Extra: link to another game I developed:)
 const otherGames = document.createElement('div')
