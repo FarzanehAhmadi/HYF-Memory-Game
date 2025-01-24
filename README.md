@@ -1,7 +1,7 @@
 # Memory Game
 
 A simple memory game where you match pairs of cards.
-Live Demo[https://farzanehahmadi.github.io/HYF-Memory-Game/]
+[Live Demo](https://farzanehahmadi.github.io/HYF-Memory-Game/)
 ## How to Play
 1. Click on a card to flip it.
 2. Find matching pairs of cards.
