@@ -73,7 +73,7 @@ let seconds = 0;
 
 let gameStarted = false;
 let flippedCards = []; 
-let picturesLenght = 0; // For checking completion
+let currentLevelCardCount = 0; // For checking completion
 
 async function getImagesForGame (level) {
   resetGameState();
@@ -104,8 +104,8 @@ async function getImagesForGame (level) {
       const card = createCard(pic);
       cardElement.appendChild(card);
     });
-    picturesLenght = 0;
-    picturesLenght = picList.length;
+    currentLevelCardCount = 0;
+    currentLevelCardCount = picList.length;
   } catch (error) {
     console.error("Error loading game images:", error)
   }
@@ -255,7 +255,7 @@ function updateBestScore(){
 
 //check if game completed
 function checkIFGameComplited(matches){
-  if(matches.length === picturesLenght){
+  if(matches.length === currentLevelCardCount){
     stopTimer();
     updateBestScore();
     alert(`Congratulations!
