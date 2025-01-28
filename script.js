@@ -7,6 +7,19 @@ titleElement.innerHTML = 'Memory Game';
 
 containerElement.appendChild(titleElement);
 
+//Best score
+let bestScore = {
+  moves : 0,
+  time : 0,
+ }
+const bestScoreElement = document.createElement('div');
+containerElement.appendChild(bestScoreElement);
+bestScoreElement.classList.add('best-score');
+const bestMoves = document.createElement('p');
+bestScoreElement.appendChild(bestMoves);
+const bestTime = document.createElement('p');
+bestScoreElement.appendChild(bestTime);
+
 // Card Elements
 const cardElement = document.createElement('div');
 cardElement.classList.add('card-grid');
@@ -36,23 +49,48 @@ easyButtElement.addEventListener('click', () => getImagesForGame('easy'));
 mediumButtElement.addEventListener('click', () => getImagesForGame('medium'));
 hardButtElement.addEventListener('click', () => getImagesForGame('hard'));
 
+//Stats elements:
+const statsElement = document.createElement('div');
+statsElement.classList.add('stats');
+containerElement.appendChild(statsElement);
+  //Reset Button
+const resetButtonEL = document.createElement('button');
+resetButtonEL.innerText = 'Reset';
+resetButtonEL.addEventListener('click', resetGame);
+resetButtonEL.classList.add('reset-button');
+  //Player moves
+const moveCounterElement = document.createElement('p');
+statsElement.appendChild(moveCounterElement);
+moveCounterElement.innerText = `Moves: 0`
+  // Timer
+const timerElement = document.createElement('p');
+statsElement.appendChild(timerElement);
+timerElement.classList.add('timer');
+timerElement.innerText = `Time: 00.00.00`;
+let timer;
+let seconds = 0;
+
 
 let gameStarted = false;
 let flippedCards = []; 
+let currentLevelCardCount = 0; // For checking completion
 
-// Fetch function for each level
-const getImagesForGame = (level) => {
+async function getImagesForGame (level) {
   resetGameState();
-  // Fetch pictures from API
-  fetch(`https://raw.githubusercontent.com/FarzanehAhmadi/FarzanehAhmadi.github.io/refs/heads/main/${level}.json`)
-  .then((res) => res.json())
-  .then((data) => {
-    const pictures = data;
+  try {
+    const picturesResponse = await fetch (`https://raw.githubusercontent.com/FarzanehAhmadi/FarzanehAhmadi.github.io/refs/heads/main/${level}.json`);
+
+    if (!picturesResponse.ok) {
+      throw new Error(`Failed to fetch images: ${picturesResponse.status}`);
+    }
+
+    const pictures = await picturesResponse.json();
     const picList = [];
+    //Duplicate
     pictures.forEach( (pic) => {
       picList.push(pic);
       picList.push(pic);
-    })
+    });
     //Shuffle
     for(let i = 0; i < 1000 ; i++){
       const randomIndex1 = Math.floor(Math.random()* picList.length)
@@ -66,10 +104,15 @@ const getImagesForGame = (level) => {
       const card = createCard(pic);
       cardElement.appendChild(card);
     });
-  })
+    currentLevelCardCount = 0;
+    currentLevelCardCount = picList.length;
+  } catch (error) {
+    console.error("Error loading game images:", error)
+  }
+  bestScoreElement.style.width ='500px'; //Adjust the width of the best score element to match the card grid size.
 }
 
-// Reset game state
+// Reset game stats
 function resetGameState (){
   flippedCards = [];
   moveCounter = 0;
@@ -101,7 +144,7 @@ function createCard (pic){
   frontImg.src = pic.url;
   frontImg.alt = "Front of the card";
   cardFront.appendChild(frontImg);
-
+  statsElement.appendChild(resetButtonEL);
   cardInner.appendChild(cardBack);
   cardInner.appendChild(cardFront);
   cardInner.addEventListener('click', flipCard);
@@ -110,7 +153,6 @@ function createCard (pic){
 }
 
 function flipCard() {
-
   if (!gameStarted) {
     startTimer();
     gameStarted = true;
@@ -127,36 +169,38 @@ function flipCard() {
   countPlayerMoves();
 
   if (flippedCards.length === 2) {
-    setTimeout(() => {
-      flippedCards.forEach((card) => card.classList.remove('flipped'));
-      flippedCards = []; // Reset for the next pair
-    }, 2000);
+    const [firstCard, secondCard] = flippedCards;
+
+    const firstCardImgSrc = firstCard.querySelector('.card-front img').src;
+    const secondCardImgSrc = secondCard.querySelector('.card-front img').src;
+    //Match card check
+    if(firstCardImgSrc === secondCardImgSrc){
+      setTimeout(() => {
+        flippedCards = [];
+        firstCard.classList.add('matched')     
+        secondCard.classList.add('matched') 
+        const matchedCards = document.querySelectorAll('.matched');
+        //check if game completed
+        checkIFGameComplited(matchedCards)
+
+      }, 500);
+    } else{
+        setTimeout(() => {
+          flippedCards.forEach((card) => card.classList.remove('flipped'));
+          flippedCards = []; 
+        }, 1000);
+      }
   }
 }
-
 //Timer and stats 
 let moveCounter = 0;
 
 function countPlayerMoves(){
   moveCounter ++;
   moveCounterElement.innerText = `Moves: ${moveCounter}`
+  statsElement.style.display = 'flex';
 }
 
-const statsElement = document.createElement('div');
-statsElement.classList.add('stats');
-containerElement.appendChild(statsElement);
-//Player moves
-const moveCounterElement = document.createElement('p');
-statsElement.appendChild(moveCounterElement);
-moveCounterElement.innerText = `Moves: 0`
-
-// Timer
-const timerElement = document.createElement('p');
-statsElement.appendChild(timerElement);
-timerElement.classList.add('timer');
-timerElement.innerText = `Time: 00.00.00`;
-let timer;
-let seconds = 0;
 function startTimer(){
   if(!timer){
     timer = setInterval(() => {
@@ -171,3 +215,57 @@ function formatTime(totalSeconds){
   const secs = (totalSeconds %60).toString().padStart(2,'0');
   return `Time: ${hours}.${minutes}.${secs}`
 }
+function stopTimer() {
+  if (timer) {
+    clearInterval(timer);
+    timer = null; 
+  }
+}
+//Reset game button
+function resetGame (){
+  flippedCards = [];
+  moveCounter = 0;
+  bestScoreElement.style.width ='600px'; //Adjust the width of the best score element to match the card grid size.
+  statsElement.style.display='none';
+  moveCounterElement.innerText = `Moves: ${moveCounter}`;
+  clearInterval(timer);
+  timer = null;
+  seconds = 0;
+  timerElement.innerText = `Time: 00.00.00`;
+  
+  gameStarted = false;
+  statsElement.removeChild(resetButtonEL)
+  cardElement.innerHTML = '';
+  levelContainer.appendChild(easyButtElement);
+  levelContainer.appendChild(mediumButtElement);
+  levelContainer.appendChild(hardButtElement);
+}
+//Update best score
+function updateBestScore(){
+  if(bestScore.moves === 0 || moveCounter < bestScore.moves){
+    bestScore.moves = moveCounter;
+  }
+  if(bestScore.time === 0 || seconds < bestScore.time){
+    bestScore.time = seconds;
+  }
+  bestMoves.innerText = `Top Record: ${bestScore.moves} moves`;
+  bestTime.innerText = `Best ${formatTime(bestScore.time)}`;
+  bestScoreElement.style.display = 'flex';
+}
+
+//check if game completed
+function checkIFGameComplited(matches){
+  if(matches.length === currentLevelCardCount){
+    stopTimer();
+    updateBestScore();
+    alert(`Congratulations!
+You could finish the game with ${moveCounter} moves and in ${timerElement.innerText.split(' ')[1]}.`)
+  }
+}
+
+
+//Extra: link to another game I developed:)
+const otherGames = document.createElement('div')
+otherGames.classList.add('other-game-section');
+containerElement.appendChild(otherGames);
+otherGames.innerHTML = 'Check Out My Other Games: <a href="https://game-rps-javascript.netlify.app/" target="_blank">Rock Paper Scissors</a>';
